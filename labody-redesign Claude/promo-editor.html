@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><meta content="noindex" name="robots"/><title>Редактор рекламного окна</title>
+<style>body{font:15px/1.6 Arial,sans-serif;max-width:760px;margin:30px auto;padding:0 18px;color:#0f2a31;background:#eef5f2}h1{font-size:24px}label{display:block;margin:14px 0 4px;font-weight:700;font-size:13px}input,textarea{width:100%;padding:11px;border:1px solid #9fc4bd;border-radius:10px;font:inherit;box-sizing:border-box}textarea{min-height:90px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}button{margin:18px 10px 0 0;padding:13px 22px;border:0;border-radius:99px;background:#0f5d5a;color:#f3dc9a;font-weight:700;cursor:pointer}ol{padding-left:20px}pre{background:#0b3433;color:#d8f0ea;padding:14px;border-radius:12px;overflow:auto;font-size:12px}.hint{color:#4f6c70;font-size:12px}</style></head><body>
+<h1>Редактор рекламного окна</h1>
+<ol><li>Заполните поля ниже.</li><li>Нажмите «Скачать promo-config.js».</li><li>Загрузите этот файл на хостинг в папку сайта, заменив старый. Новый баннер положите в <b>assets</b>.</li></ol>
+<label>Файл баннера (имя в папке assets)</label><input id="image" value="promo-first-visit.jpg"/>
+<label>Заголовок</label><input id="title" value="Массаж МИКС"/>
+<label>Золотое продолжение заголовка</label><input id="titleAccent" value="за 1990 ₽"/>
+<label>Текст</label><textarea id="text">60 минут глубокого расслабления на первый визит — вместо 4 200 ₽. Запишитесь онлайн и подарите себе заботу.</textarea>
+<div class="row"><div><label>Текст кнопки</label><input id="buttonText" value="Записаться на МИКС"/></div><div><label>Ссылка кнопки</label><input id="link" value="#booking"/></div></div>
+<div class="row"><div><label>Надпись на плавающей кнопке</label><input id="pillText" value="Массаж МИКС"/></div><div><label>Цена на кнопке</label><input id="pillPrice" value="1990 ₽"/></div></div>
+<div class="row"><div><label>Повторять каждые (секунд)</label><input id="repeatEverySec" type="number" value="90"/></div><div><label>Первый показ через (секунд)</label><input id="firstDelaySec" type="number" value="9"/></div></div>
+<div class="row"><div><label>Начало акции (необязательно)</label><input id="startDate" type="date"/></div><div><label>Конец акции (окно исчезнет само)</label><input id="endDate" type="date"/></div></div>
+<label>Мелкая пометка</label><input id="note" value="Предложение действует на первый визит. Уточняйте детали у администратора."/>
+<label><input checked="" id="enabled" style="width:auto" type="checkbox"/> Показывать окно</label>
+<button id="dl">Скачать promo-config.js</button><button id="cp">Скопировать</button>
+<p class="hint">Файл работает без интернета и без VPN. Свой баннер можно сделать в любом редакторе картинок.</p><pre id="out"></pre>
+<script>const f=['image','title','titleAccent','text','buttonText','link','pillText','pillPrice','note','startDate','endDate'],n=['repeatEverySec','firstDelaySec'];
+function build(){const o={enabled:document.getElementById('enabled').checked};f.forEach(k=>o[k]=document.getElementById(k).value);o.image=o.image.startsWith('assets/')?o.image:'assets/'+o.image;o.imageAlt=o.title+' '+o.titleAccent;n.forEach(k=>o[k]=+document.getElementById(k).value);return '/* Настройки рекламного окна (создано в редакторе) */\nwindow.PROMO = '+JSON.stringify(o,null,2)+';\n'}
+function show(){document.getElementById('out').textContent=build()}document.querySelectorAll('input,textarea').forEach(e=>e.addEventListener('input',show));show();
+dl.onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([build()],{type:'text/javascript'}));a.download='promo-config.js';a.click()};cp.onclick=()=>navigator.clipboard.writeText(build());</script></body></html>
